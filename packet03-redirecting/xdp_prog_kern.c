@@ -98,6 +98,8 @@ int xdp_icmp_echo_func(struct xdp_md *ctx)
 		goto out;
 	}
 
+    bpf_printk("echo_reply : %u", echo_reply);
+
 	/* Swap Ethernet source and destination */
 	swap_src_dst_mac(eth);
 

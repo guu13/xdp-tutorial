@@ -104,7 +104,7 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 	}
 
 out:
-    return  XDP_PASS;
+    return  action;
     //return xdp_stats_record_action(ctx, action);
 }
 
