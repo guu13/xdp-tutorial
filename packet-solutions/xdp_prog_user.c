@@ -27,6 +27,8 @@ static const char *__doc__ = "XDP redirect helper\n"
 
 #include "../common/xdp_stats_kern_user.h"
 
+#include <linux/in6.h>
+
 static const struct option_wrapper long_options[] = {
 
 	{{"help",        no_argument,		NULL, 'h' },
@@ -105,8 +107,25 @@ static int write_iface_params(int map_fd, unsigned char *src, unsigned char *des
 
 const char *pin_basedir =  "/sys/fs/bpf";
 
+void test()
+{
+    struct in6_addr addr = {};
+    addr.in6_u.u6_addr8[0] =255;
+    addr.in6_u.u6_addr8[1] =255;
+    addr.in6_u.u6_addr8[2] =255;
+    addr.in6_u.u6_addr8[3] =255;
+
+    printf("%u \n", addr.in6_u.u6_addr8[0]);
+    printf("%u \n", addr.in6_u.u6_addr8[1]);
+    printf("%u \n", addr.in6_u.u6_addr8[2]);
+    printf("%u \n", addr.in6_u.u6_addr8[3]);
+
+}
+
 int main(int argc, char **argv)
 {
+    test();
+
 	int i;
 	int len;
 	int map_fd;

@@ -280,4 +280,9 @@ static inline __u64 ether_addr_to_u64(const __u8 *addr)
     return u;
 }
 
+static __always_inline int parse_ipv6_addr(struct ipv6hdr *ipv6hdr, int i)
+{
+    return (ipv6hdr->saddr).in6_u.u6_addr8[i] ;
+}
+
 #endif /* __PARSING_HELPERS_H */

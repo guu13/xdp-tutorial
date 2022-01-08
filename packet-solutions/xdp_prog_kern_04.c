@@ -14,6 +14,8 @@
 #include "../common/xdp_stats_kern_user.h"
 #include "../common/xdp_stats_kern.h"
 
+
+
 // ./xdp_loader --dev enp0s5 --force --filename xdp_prog_kern_04.o --progsec xdp_patch_ports
 // ./xdp_loader --dev enp0s5  --U --force --filename xdp_prog_kern_04.o --progsec xdp_patch_ports
 // cat /sys/kernel/debug/tracing/trace_pipe
@@ -56,7 +58,11 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
         bpf_printk("ETH_P_IP protocol: %d\n",  ip_type);
 	} else if (eth_type == bpf_htons(ETH_P_IPV6)) {
 		ip_type = parse_ip6hdr(&nh, data_end, &ipv6hdr);
-        bpf_printk("ETH_P_IPV6 protocol: %d ,  %d\n",  ip_type, sizeof(ipv6hdr->saddr.in6_u));
+        //bpf_printk("ETH_P_IPV6 protocol: %d ,  %d\n",  ip_type, sizeof(ipv6hdr->saddr));
+//        if(ipv6hdr){
+//            __u8 i0 = ipv6hdr->saddr.in6_u.u6_addr8[0];
+//            bpf_printk("ETH_P_IPV6 protocol: %u /n",  i0);
+//        }
     } else {
 		goto out;
 	}
@@ -69,6 +75,8 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 		}
 
         bpf_printk("IPPROTO_UDP srcPort: %u, dstPort: %u\n", bpf_ntohs(udphdr->source), bpf_ntohs(udphdr->dest));
+
+
 
 		//udphdr->dest = bpf_htons(bpf_ntohs(udphdr->dest) - 1);
 	} else if (ip_type == IPPROTO_TCP) {
