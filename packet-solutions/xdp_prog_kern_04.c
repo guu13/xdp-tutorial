@@ -44,7 +44,7 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 		goto out;
 	}
 
-    bpf_printk("srcMAC: %llu, dstMAC: %llu, proto: %u\n",
+    bpf_printk("srcMAC: %llu, dstMAC: %llu, proto: %u",
                ether_addr_to_u64(eth->h_source),
                ether_addr_to_u64(eth->h_dest),
                bpf_ntohs(eth->h_proto));
@@ -53,29 +53,32 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 		ip_type = parse_iphdr(&nh, data_end, &iphdr);
         //bpf_printk("ETH_P_IP protocol: %d\n",  ip_type);
         if(iphdr){
-            bpf_printk("ETH_P_IP protocol s - d : %u %u \n",  nh.s_u4_addr, nh.d_u4_addr);
+            bpf_printk("srcIP4: %u, desIP4: %u, ipType: %d",  nh.s_u4_addr, nh.d_u4_addr, ip_type);
         }
 	} else if (eth_type == bpf_htons(ETH_P_IPV6)) {
 		ip_type = parse_ip6hdr(&nh, data_end, &ipv6hdr);
         //bpf_printk("ETH_P_IPV6 protocol: %d\n",  ip_type);
         if(ipv6hdr){
-            bpf_printk("ETH_P_IPV6 protocol s1: %x %x \n",  nh.s_u6_addr8[0], nh.s_u6_addr8[1]);
-            bpf_printk("ETH_P_IPV6 protocol s2: %x %x \n",  nh.s_u6_addr8[2], nh.s_u6_addr8[3]);
-            bpf_printk("ETH_P_IPV6 protocol s3: %x %x \n",  nh.s_u6_addr8[4], nh.s_u6_addr8[5]);
-            bpf_printk("ETH_P_IPV6 protocol s4: %x %x \n",  nh.s_u6_addr8[6], nh.s_u6_addr8[7]);
-            bpf_printk("ETH_P_IPV6 protocol s5: %x %x \n",  nh.s_u6_addr8[8], nh.s_u6_addr8[9]);
-            bpf_printk("ETH_P_IPV6 protocol s6: %x %x \n",  nh.s_u6_addr8[10], nh.s_u6_addr8[11]);
-            bpf_printk("ETH_P_IPV6 protocol s7: %x %x \n",  nh.s_u6_addr8[12], nh.s_u6_addr8[13]);
-            bpf_printk("ETH_P_IPV6 protocol s8: %x %x \n",  nh.s_u6_addr8[14], nh.s_u6_addr8[15]);
+            bpf_printk("ETH_P_IPV6 protocol s1: %x %x",  nh.s_u6_addr8[0], nh.s_u6_addr8[1]);
+            bpf_printk("ETH_P_IPV6 protocol s2: %x %x",  nh.s_u6_addr8[2], nh.s_u6_addr8[3]);
+            bpf_printk("ETH_P_IPV6 protocol s3: %x %x",  nh.s_u6_addr8[4], nh.s_u6_addr8[5]);
+            bpf_printk("ETH_P_IPV6 protocol s4: %x %x",  nh.s_u6_addr8[6], nh.s_u6_addr8[7]);
+            bpf_printk("ETH_P_IPV6 protocol s5: %x %x",  nh.s_u6_addr8[8], nh.s_u6_addr8[9]);
+            bpf_printk("ETH_P_IPV6 protocol s6: %x %x",  nh.s_u6_addr8[10], nh.s_u6_addr8[11]);
+            bpf_printk("ETH_P_IPV6 protocol s7: %x %x",  nh.s_u6_addr8[12], nh.s_u6_addr8[13]);
+            bpf_printk("ETH_P_IPV6 protocol s8: %x %x",  nh.s_u6_addr8[14], nh.s_u6_addr8[15]);
 
-            bpf_printk("ETH_P_IPV6 protocol d1: %x %x \n",  nh.d_u6_addr8[0], nh.d_u6_addr8[1]);
-            bpf_printk("ETH_P_IPV6 protocol d2: %x %x \n",  nh.d_u6_addr8[2], nh.d_u6_addr8[3]);
-            bpf_printk("ETH_P_IPV6 protocol d3: %x %x \n",  nh.d_u6_addr8[4], nh.d_u6_addr8[5]);
-            bpf_printk("ETH_P_IPV6 protocol d4: %x %x \n",  nh.d_u6_addr8[6], nh.d_u6_addr8[7]);
-            bpf_printk("ETH_P_IPV6 protocol d5: %x %x \n",  nh.d_u6_addr8[8], nh.d_u6_addr8[9]);
-            bpf_printk("ETH_P_IPV6 protocol d6: %x %x \n",  nh.d_u6_addr8[10], nh.d_u6_addr8[11]);
-            bpf_printk("ETH_P_IPV6 protocol d7: %x %x \n",  nh.d_u6_addr8[12], nh.d_u6_addr8[13]);
-            bpf_printk("ETH_P_IPV6 protocol d8: %x %x \n",  nh.d_u6_addr8[14], nh.d_u6_addr8[15]);
+            bpf_printk("ETH_P_IPV6 protocol d1: %x %x",  nh.d_u6_addr8[0], nh.d_u6_addr8[1]);
+            bpf_printk("ETH_P_IPV6 protocol d2: %x %x",  nh.d_u6_addr8[2], nh.d_u6_addr8[3]);
+            bpf_printk("ETH_P_IPV6 protocol d3: %x %x",  nh.d_u6_addr8[4], nh.d_u6_addr8[5]);
+            bpf_printk("ETH_P_IPV6 protocol d4: %x %x",  nh.d_u6_addr8[6], nh.d_u6_addr8[7]);
+            bpf_printk("ETH_P_IPV6 protocol d5: %x %x",  nh.d_u6_addr8[8], nh.d_u6_addr8[9]);
+            bpf_printk("ETH_P_IPV6 protocol d6: %x %x",  nh.d_u6_addr8[10], nh.d_u6_addr8[11]);
+            bpf_printk("ETH_P_IPV6 protocol d7: %x %x",  nh.d_u6_addr8[12], nh.d_u6_addr8[13]);
+            bpf_printk("ETH_P_IPV6 protocol d8: %x %x",  nh.d_u6_addr8[14], nh.d_u6_addr8[15]);
+
+            bpf_printk("srcIP6_1: %llu, srcIP6_2: %llu," , ipv6_addr1_to_u64(nh.s_u6_addr8), ipv6_addr2_to_u64(nh.s_u6_addr8));
+            bpf_printk("desIP6_1: %llu, desIP6_2: %llu," , ipv6_addr1_to_u64(nh.d_u6_addr8), ipv6_addr2_to_u64(nh.d_u6_addr8));
         }
     } else {
 		goto out;
@@ -88,8 +91,7 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 			goto out;
 		}
 
-        bpf_printk("IPPROTO_UDP srcPort: %u, dstPort: %u\n", bpf_ntohs(udphdr->source), bpf_ntohs(udphdr->dest));
-
+        bpf_printk("srcUdpPort: %u, dstUdpPort: %u", bpf_ntohs(udphdr->source), bpf_ntohs(udphdr->dest));
 		//udphdr->dest = bpf_htons(bpf_ntohs(udphdr->dest) - 1);
 	} else if (ip_type == IPPROTO_TCP) {
 		if (parse_tcphdr(&nh, data_end, &tcphdr) < 0) {
@@ -97,8 +99,7 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 			goto out;
 		}
 
-        bpf_printk("IPPROTO_TCP srcPort: %u, dstPort: %u\n", bpf_ntohs(tcphdr->source), bpf_ntohs(tcphdr->dest));
-
+        bpf_printk("srcTcpPort: %u, dstTcpPort: %u", bpf_ntohs(tcphdr->source), bpf_ntohs(tcphdr->dest));
 		//tcphdr->dest = bpf_htons(bpf_ntohs(tcphdr->dest) - 1);
 	}
 

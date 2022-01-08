@@ -110,16 +110,31 @@ const char *pin_basedir =  "/sys/fs/bpf";
 void test()
 {
     struct in6_addr addr = {};
-    addr.in6_u.u6_addr8[0] =255;
-    addr.in6_u.u6_addr8[1] =255;
-    addr.in6_u.u6_addr8[2] =255;
-    addr.in6_u.u6_addr8[3] =255;
+    addr.in6_u.u6_addr8[0] =0xfd;
+    addr.in6_u.u6_addr8[1] =0xb2;
+    addr.in6_u.u6_addr8[2] =0x2c;
+    addr.in6_u.u6_addr8[3] =0x26;
+    addr.in6_u.u6_addr8[4] =0xf4;
+    addr.in6_u.u6_addr8[5] =0xe4;
+    addr.in6_u.u6_addr8[6] =0x0;
+    addr.in6_u.u6_addr8[7] =0x0; // fdb22c26f4e40000 18280722383279226880
 
-    printf("%u \n", addr.in6_u.u6_addr8[0]);
-    printf("%u \n", addr.in6_u.u6_addr8[1]);
-    printf("%u \n", addr.in6_u.u6_addr8[2]);
-    printf("%u \n", addr.in6_u.u6_addr8[3]);
+    addr.in6_u.u6_addr8[8] =0xb1;
+    addr.in6_u.u6_addr8[9] =0xca;
+    addr.in6_u.u6_addr8[10] =0xd2;
+    addr.in6_u.u6_addr8[11] =0xd0;
+    addr.in6_u.u6_addr8[12] =0xe9;
+    addr.in6_u.u6_addr8[13] =0x0f;
+    addr.in6_u.u6_addr8[14] =0xf;
+    addr.in6_u.u6_addr8[15] =0xf; //  b1cad2d0e90fffff 12811283884713905935
 
+    __u64 u1 = 0;
+    __u64 u2 = 0;
+    for (int i =  0 ; i < 8 ; i++)
+        u1 = u1 << 8 | addr.in6_u.u6_addr8[i];
+    for (int i =  8 ; i < 16 ; i++)
+        u2 = u2 << 8 | addr.in6_u.u6_addr8[i];
+    printf("%llu , %llu \n", u1, u2 );
 }
 
 int main(int argc, char **argv)

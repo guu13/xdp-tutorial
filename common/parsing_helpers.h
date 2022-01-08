@@ -294,9 +294,21 @@ static inline __u64 ether_addr_to_u64(const __u8 *addr)
     return u;
 }
 
-static __always_inline int parse_ipv6_addr(struct ipv6hdr *ipv6hdr, int i)
+
+static inline __u64 ipv6_addr1_to_u64(const __u8 *addr)
 {
-    return (ipv6hdr->saddr).in6_u.u6_addr8[i] ;
+    __u64 u = 0;
+    for (int i =  0 ; i < 8 ; i++)
+        u = u << 8 | addr[i];
+    return u;
+}
+
+static inline __u64 ipv6_addr2_to_u64(const __u8 *addr)
+{
+    __u64 u = 0;
+    for (int i =  8 ; i < 16 ; i++)
+        u = u << 8 | addr[i];
+    return u;
 }
 
 #endif /* __PARSING_HELPERS_H */
