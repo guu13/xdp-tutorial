@@ -47,26 +47,38 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
                ether_addr_to_u64(eth->h_dest),
                bpf_ntohs(eth->h_proto));
 
+//    __u32 _iphdr_src ;
+//    __u32 _iphdr_des ;
+//    int _iphdr_protocol ;
 	if (eth_type == bpf_htons(ETH_P_IP)) {
 		ip_type = parse_iphdr(&nh, data_end, &iphdr);
-        //bpf_printk("protocol: %u\n", iphdr->protocol);
+//        _iphdr_src = bpf_ntohl(iphdr->saddr);
+        bpf_printk("ETH_P_IP protocol: %d\n",  ip_type);
 	} else if (eth_type == bpf_htons(ETH_P_IPV6)) {
 		ip_type = parse_ip6hdr(&nh, data_end, &ipv6hdr);
-	} else {
+        bpf_printk("ETH_P_IPV6 protocol: %d\n",  ip_type);
+    } else {
 		goto out;
 	}
-    bpf_printk("ip protocol: %d\n",  ip_type);
+
+
 	if (ip_type == IPPROTO_UDP) {
 		if (parse_udphdr(&nh, data_end, &udphdr) < 0) {
 			action = XDP_ABORTED;
 			goto out;
 		}
+
+        bpf_printk("IPPROTO_UDP srcPort: %u, dstPort: %u\n", bpf_ntohs(udphdr->source), bpf_ntohs(udphdr->dest));
+
 		//udphdr->dest = bpf_htons(bpf_ntohs(udphdr->dest) - 1);
 	} else if (ip_type == IPPROTO_TCP) {
 		if (parse_tcphdr(&nh, data_end, &tcphdr) < 0) {
 			action = XDP_ABORTED;
 			goto out;
 		}
+
+        bpf_printk("IPPROTO_TCP srcPort: %u, dstPort: %u\n", bpf_ntohs(tcphdr->source), bpf_ntohs(tcphdr->dest));
+
 		//tcphdr->dest = bpf_htons(bpf_ntohs(tcphdr->dest) - 1);
 	}
 
