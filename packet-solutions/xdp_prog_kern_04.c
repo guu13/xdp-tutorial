@@ -56,7 +56,7 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
         bpf_printk("ETH_P_IP protocol: %d\n",  ip_type);
 	} else if (eth_type == bpf_htons(ETH_P_IPV6)) {
 		ip_type = parse_ip6hdr(&nh, data_end, &ipv6hdr);
-        bpf_printk("ETH_P_IPV6 protocol: %d\n",  ip_type);
+        bpf_printk("ETH_P_IPV6 protocol: %d ,  %d\n",  ip_type, sizeof(ipv6hdr->saddr.in6_u));
     } else {
 		goto out;
 	}
