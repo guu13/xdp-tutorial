@@ -42,14 +42,20 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 		goto out;
 	}
 
+    bpf_printk("srcMAC: %llu, dstMAC: %llu, proto: %u\n",
+               ether_addr_to_u64(eth->h_source),
+               ether_addr_to_u64(eth->h_dest),
+               bpf_ntohs(eth->h_proto));
+
 	if (eth_type == bpf_htons(ETH_P_IP)) {
 		ip_type = parse_iphdr(&nh, data_end, &iphdr);
+        //bpf_printk("protocol: %u\n", iphdr->protocol);
 	} else if (eth_type == bpf_htons(ETH_P_IPV6)) {
 		ip_type = parse_ip6hdr(&nh, data_end, &ipv6hdr);
 	} else {
 		goto out;
 	}
-
+    bpf_printk("ip protocol: %d\n",  ip_type);
 	if (ip_type == IPPROTO_UDP) {
 		if (parse_udphdr(&nh, data_end, &udphdr) < 0) {
 			action = XDP_ABORTED;
