@@ -29,9 +29,15 @@
 #include <linux/udp.h>
 #include <linux/tcp.h>
 
+#include <bpf/bpf_endian.h>
+
 /* Header cursor to keep track of current parsing position */
 struct hdr_cursor {
 	void *pos;
+    __u8 s_u6_addr8[16] ;
+    __u8 d_u6_addr8[16] ;
+    __u32 s_u4_addr;
+    __u32 d_u4_addr;
 };
 
 /*
@@ -145,6 +151,11 @@ static __always_inline int parse_ip6hdr(struct hdr_cursor *nh,
 	nh->pos = ip6h + 1;
 	*ip6hdr = ip6h;
 
+    for(int i=0; i<16 ; i++){
+        nh->s_u6_addr8[i] = ip6h->saddr.in6_u.u6_addr8[i];
+        nh->d_u6_addr8[i] = ip6h->daddr.in6_u.u6_addr8[i];
+    }
+
 	return ip6h->nexthdr;
 }
 
@@ -169,6 +180,9 @@ static __always_inline int parse_iphdr(struct hdr_cursor *nh,
 
 	nh->pos += hdrsize;
 	*iphdr = iph;
+
+    nh->s_u4_addr = bpf_ntohl(iph->saddr);
+    nh->d_u4_addr = bpf_ntohl(iph->daddr);
 
 	return iph->protocol;
 }
