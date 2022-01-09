@@ -181,8 +181,8 @@ static __always_inline int parse_iphdr(struct hdr_cursor *nh,
 	nh->pos += hdrsize;
 	*iphdr = iph;
 
-    nh->s_u4_addr = bpf_ntohl(iph->saddr);
-    nh->d_u4_addr = bpf_ntohl(iph->daddr);
+    nh->s_u4_addr = iph->saddr;
+    nh->d_u4_addr = iph->daddr;
 
 	return iph->protocol;
 }
