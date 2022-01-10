@@ -49,6 +49,8 @@ __u32 xdp_stats_record_action(struct xdp_md *ctx, __u32 action)
 	return action;
 }
 
+//./xdp_loader --dev enp0s5 --force  --filename xdp_prog_kern.o --progsec xdp_pass
+
 SEC("xdp_pass")
 int  xdp_pass_func(struct xdp_md *ctx)
 {

@@ -16,8 +16,8 @@
 
 
 
-// ./xdp_loader --dev enp0s5 --force --native-mode --filename xdp_prog_kern_05.o --progsec xdp_patch_modeify_port
-// ./xdp_loader --dev enp0s5  --U  --native-mode --force --filename xdp_prog_kern_05.o --progsec xdp_patch_modeify_port
+// ./xdp_loader --dev enp0s5 --force  --filename xdp_prog_kern_05.o --progsec xdp_patch_modeify_port
+// ./xdp_loader --dev enp0s5  --U   --force --filename xdp_prog_kern_05.o --progsec xdp_patch_modeify_port
 // cat /sys/kernel/debug/tracing/trace_pipe
 // ip link set dev enp0s5 xdp off
 
