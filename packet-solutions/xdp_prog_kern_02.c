@@ -63,9 +63,10 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 			goto out;
 		}
 
-		if(bpf_ntohs(tcphdr->dest) == 80)
+		if(bpf_ntohs(tcphdr->dest) == 80){
 			bpf_printk("%u", bpf_ntohs(tcphdr->dest));
-		//tcphdr->dest = bpf_htons(bpf_ntohs(tcphdr->dest) - 1);
+		    tcphdr->dest = bpf_htons(bpf_ntohs(tcphdr->dest) - 1);
+		}	
 	}
 
 out:
