@@ -14,6 +14,11 @@
 #include "../common/xdp_stats_kern_user.h"
 #include "../common/xdp_stats_kern.h"
 
+// ./xdp_loader --dev enp0s5 --force --native-mode --filename xdp_prog_kern_04.o --progsec xdp_patch_watch
+// ./xdp_loader --dev enp0s5  --U  --native-mode --force --filename xdp_prog_kern_04.o --progsec xdp_patch_watch
+// cat /sys/kernel/debug/tracing/trace_pipe
+// ip link set dev enp0s5 xdp off
+
 /*
  * Solution to the assignment 1 in lesson packet02
  */
@@ -50,13 +55,17 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 			action = XDP_ABORTED;
 			goto out;
 		}
-		udphdr->dest = bpf_htons(bpf_ntohs(udphdr->dest) - 1);
+		//udphdr->dest = bpf_htons(bpf_ntohs(udphdr->dest) - 1);
 	} else if (ip_type == IPPROTO_TCP) {
+
 		if (parse_tcphdr(&nh, data_end, &tcphdr) < 0) {
 			action = XDP_ABORTED;
 			goto out;
 		}
-		tcphdr->dest = bpf_htons(bpf_ntohs(tcphdr->dest) - 1);
+
+		if(bpf_ntohs(tcphdr->dest) == 80)
+			bpf_printk("%u", bpf_ntohs(tcphdr->dest));
+		//tcphdr->dest = bpf_htons(bpf_ntohs(tcphdr->dest) - 1);
 	}
 
 out:

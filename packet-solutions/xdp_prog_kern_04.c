@@ -16,15 +16,15 @@
 
 
 
-// ./xdp_loader --dev enp0s5 --force --filename xdp_prog_kern_04.o --progsec xdp_patch_ports
-// ./xdp_loader --dev enp0s5  --U --force --filename xdp_prog_kern_04.o --progsec xdp_patch_ports
+// ./xdp_loader --dev enp0s5 --force --native-mode --filename xdp_prog_kern_04.o --progsec xdp_patch_watch
+// ./xdp_loader --dev enp0s5  --U  --native-mode --force --filename xdp_prog_kern_04.o --progsec xdp_patch_watch
 // cat /sys/kernel/debug/tracing/trace_pipe
 // ip link set dev enp0s5 xdp off
 
 /*
  * Solution to the assignment 1 in lesson packet02
  */
-SEC("xdp_patch_ports")
+SEC("xdp_patch_watch")
 int xdp_patch_ports_func(struct xdp_md *ctx)
 {
 	int action = XDP_PASS;
