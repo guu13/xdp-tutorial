@@ -55,18 +55,14 @@ int xdp_patch_ports_func(struct xdp_md *ctx)
 			action = XDP_ABORTED;
 			goto out;
 		}
-		//udphdr->dest = bpf_htons(bpf_ntohs(udphdr->dest) - 1);
+		udphdr->dest = bpf_htons(bpf_ntohs(udphdr->dest) - 1);
 	} else if (ip_type == IPPROTO_TCP) {
 
 		if (parse_tcphdr(&nh, data_end, &tcphdr) < 0) {
 			action = XDP_ABORTED;
 			goto out;
 		}
-
-		if(bpf_ntohs(tcphdr->dest) == 80){
-			bpf_printk("%u", bpf_ntohs(tcphdr->dest));
-		    tcphdr->dest = bpf_htons(bpf_ntohs(tcphdr->dest) - 1);
-		}	
+		tcphdr->dest = bpf_htons(bpf_ntohs(tcphdr->dest) -1);
 	}
 
 out:
