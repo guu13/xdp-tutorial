@@ -107,6 +107,22 @@ static int write_iface_params(int map_fd, unsigned char *src, unsigned char *des
 
 const char *pin_basedir =  "/sys/fs/bpf";
 
+/**
+ * @brief 
+ * 
+ * t setup -n left --legacy-ip
+ * t setup -n right --legacy-ip
+ * t load -n left -- -F --file xdp_prog_kern_03.o --progsec xdp_redirect_map
+ * t load -n right -- -F --file xdp_prog_kern_03.o --progsec xdp_redirect_map
+ * 
+ * t exec -n left --  ./xdp_loader -d veth0 -F  --progsec xdp_pass
+ * t exec -n right -- ./xdp_loader -d veth0 -F  --progsec xdp_pass
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+
 
 int main(int argc, char **argv)
 {
